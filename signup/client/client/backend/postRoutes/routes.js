@@ -1,73 +1,73 @@
-const userDetails  = require("../model/Schemas");
+const UserDetails = require("../model/Schemas");
 
 const saveUserDetails = (app) => {
-
   app.post("/userDetails", async (req, res) => {
     try {
       let { name, surname, email, number } = req.body;
-      let userDetails = new userDetails({
+      let userDetails = new UserDetails({
         name,
         surname,
         email,
-        number
+        number,
       });
 
       const userDetailsSave = await userDetails.save();
-      res.send({
+      res.status(201).json({
         message: "Successfully Saved",
         userDetailsSave,
       });
     } catch (error) {
-      console.log(error);
-      res.status(404).send({ message: "Post Error" });
+      console.error(error);
+      res.status(500).json({ message: 'Error saving user details' });
     }
   });
 
-  app.get("/getdetails", async (req, res) => {
+  app.get("/users", async (req, res) => {
     try {
-      const findUserDetails = await userDetails.find();
-      res.send(findUserDetails);
+      const findUserDetails = await UserDetails.find();
+      res.status(200).json(findUserDetails);
     } catch (error) {
-      console.log({ message: "hello world" });
+      console.error(error);
+      res.status(500).json({ message: "Error fetching user details" });
     }
   });
 
-  app.get("/getdetails/:id", async (req, res) => {
+  app.get("/users/:id", async (req, res) => {
     try {
-      const userDetail = await userDetail.findById(req.params.id);
-      res.send(userDetail);
+      const userDetail = await UserDetails.findById(req.params.id);
+      if (userDetail) {
+        res.status(200).json(userDetail);
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
     } catch (error) {
-      console.log({ message: "EMily" });
+      console.error(error);
+      res.status(500).json({ message: "Error fetching user details" });
     }
   });
 
-  app.put('/update/:id', async (req, res) => {
+  app.put('/users/:id', async (req, res) => {
     const { id } = req.params;
     let { name, surname, email, number } = req.body;
 
     try {
-      const update = await UserDetails.findOneAndUpdate(
+      const updatedUser = await UserDetails.findOneAndUpdate(
         { _id: id },
         { name, surname, email, number },
         { new: true }
       );
-      res.send({ message: "Successfully Updated", update });
+
+      if (updatedUser) {
+        res.status(200).json({ message: "Successfully Updated", updatedUser });
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
     } catch (error) {
-      console.log({ message: "Edit Unsuccessfully" });
+      console.error(error);
+      res.status(500).json({ message: "Error updating user details" });
     }
   });
-
-  app.delete('/delete/:id', async (req, res) => {
-    try {
-      const { id } = req.params;
-      const deleteDetails = await UserDetails.deleteOne({ _id: id });
-      res.send({ message: "Successfully Deleted", deleteDetails });
-    } catch (error) {
-      console.log({ message: "Deleting Unsuccessfully" });
-      res.sendStatus(404);
-    }
-  });
-
 };
 
 module.exports = saveUserDetails;
+

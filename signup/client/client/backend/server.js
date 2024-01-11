@@ -2,25 +2,29 @@
 const express =require('express');
 const dotenv =require('dotenv').config()
 const mongoose =require('mongoose');
-const cors = require ('cors')
+const cors = require ('cors');
+const  userModel = require("./model/Schemas");
 const URI = process.env.MONGO_URI;
-const port = process.env.PORT  || 5000
-const {saveuserDetails} = require ("./postRoutes/routes")
+const port = process.env.PORT || 50001
+
 
 const app = express();
 app.use=(cors());
 
 
 
-const url2 = "mongodb+srv://emilysbongile17:Emily.20@cluster0.9ucgs2k.mongodb.net/?retryWrites=true&w=majority"
-console.log(url2)
-mongoose.connect(url2).then(res => console.log("mongodb is connected")).catch(e => console.log("eeeee", e))
+const uri = "mongodb+srv://emilysbongile177:Emily.20@cluster0.1lqvov6.mongodb.net/?retryWrites=true&w=majority";
+
+console.log(uri)
+mongoose.connect(uri)
+  .then(() => console.log("MongoDB is connected"))
+  .catch((error) => console.error("Error connecting to MongoDB:", error));
 
 
 
-app.get("/api/getDetails", (req, res) => {
-   const user =  UserModel.find({}).then(function(users){
-      res.status(202).json(users)
+app.get("/api/users", (req, res) => {
+   userModel.find({}).then(function(users){
+      res.status(202).json({ message:'hello' })
       
     }).catch(function(err){
       console.log(err)
@@ -28,9 +32,9 @@ app.get("/api/getDetails", (req, res) => {
     })
   });
   
-  app.post("/api/userDetails", async (req, res) => {
+  app.post("/api/users", async (req, res) => {
     try{
-      const user = await new UserModel(req.body).save();
+      const user = await new   userModel(req.body).save();
       res.send(200).json({ message: 'User details added successfully' });
     }catch(e){
       console.log(e);
@@ -39,6 +43,4 @@ app.get("/api/getDetails", (req, res) => {
 
 
 
-
-
-app.listen(port,() => console.log(`server is running ${port}`))
+app.listen(port,() => console.log(`server is running ${port}`));
