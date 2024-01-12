@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Link} from "react-router-dom";
+
 
 
 function Signin() {
@@ -40,21 +40,16 @@ const handleSubmit = (e) => {
   return (
     <div className="signin">
      
-    
-        
-       
       <h1>Signin</h1>
 
       <form onSubmit={handleSubmit} className="forms" id="signin-form" action="" method="post">
 
-     
-
+    
         <label htmlFor="name">Name</label>
         <input
           type="text"
           name="name"
           className="form-control"
-          // value={name}
           placeholder="Enter your name"
           onChange={(e) => setName(e.target.value)}
         />
@@ -64,7 +59,6 @@ const handleSubmit = (e) => {
           type="email"
           name="email"
           className="form-control"
-          // value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your Email"
         />
@@ -73,8 +67,11 @@ const handleSubmit = (e) => {
           Signin
         
         </button>
+        <button className="send">
+
         <a href="https://www.linkedin.com/" >
-                      Linkedin</a>
+                      Dashboard</a>
+        </button>
                      
            
       </form>

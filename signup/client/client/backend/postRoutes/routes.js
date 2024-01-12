@@ -12,62 +12,36 @@ const saveUserDetails = (app) => {
       });
 
       const userDetailsSave = await userDetails.save();
-      res.status(201).json({
+      res.send({
         message: "Successfully Saved",
         userDetailsSave,
       });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Error saving user details' });
+      res.status(404).send({ message: 'Error saving user details' });
     }
   });
 
-  app.get("/users", async (req, res) => {
+  app.get("/userDetails", async (req, res) => {
     try {
       const findUserDetails = await UserDetails.find();
-      res.status(200).json(findUserDetails);
+      res.send(findUserDetails);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Error fetching user details" });
+     
     }
   });
 
   app.get("/users/:id", async (req, res) => {
     try {
-      const userDetail = await UserDetails.findById(req.params.id);
-      if (userDetail) {
-        res.status(200).json(userDetail);
-      } else {
-        res.status(404).json({ message: "User not found" });
-      }
+      const finduserDetails = await UserDetails.findById(req.body.id);
+      res.send(finduserDetails);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error fetching user details" });
+      console.log({ message: "Get Error" });
     }
   });
 
-  app.put('/users/:id', async (req, res) => {
-    const { id } = req.params;
-    let { name, surname, email, number } = req.body;
-
-    try {
-      const updatedUser = await UserDetails.findOneAndUpdate(
-        { _id: id },
-        { name, surname, email, number },
-        { new: true }
-      );
-
-      if (updatedUser) {
-        res.status(200).json({ message: "Successfully Updated", updatedUser });
-      } else {
-        res.status(404).json({ message: "User not found" });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error updating user details" });
-    }
-  });
-};
+}
 
 module.exports = saveUserDetails;
 

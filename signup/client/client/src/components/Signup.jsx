@@ -15,7 +15,7 @@ const Signup = () => {
 
   const getUser = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/userDetails');
+      const response = await axios.get('http://localhost:500/userDetails');
       console.log(response.data);
     } catch (error) {
       console.error('Error', error);
@@ -34,7 +34,7 @@ const Signup = () => {
     console.log("name:", userDetails.name, "surname:", userDetails.surname, "email:", userDetails.email, "number:", userDetails.number);
 
     try {
-      await axios.post('http://localhost:5000/userDetails', userDetails);
+      await axios.post('http://localhost:500/userDetails', userDetails);
       console.log('User successfully created!');
       getUser();
     } catch (error) {
@@ -46,7 +46,7 @@ const Signup = () => {
     <div className='signup'>
 
       <h1>Signup</h1>
-      <p>Please fill in your information..</p>
+      <p>Please fill in your information...</p>
       <div className="form">
         <form>
           <label htmlFor="Name">Name</label>
