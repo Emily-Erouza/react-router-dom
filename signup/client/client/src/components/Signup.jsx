@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+
+
+
 const Signup = () => {
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -10,12 +13,12 @@ const Signup = () => {
   });
 
   useEffect(() => {
-    getUser();
+    getuserDetails();
   }, []);
 
-  const getUser = async () => {
+  const getuserDetails = async  () =>{
     try {
-      const response = await axios.get('http://localhost:500/userDetails');
+      const response = await axios.fetch('http://localhost:50001/users');
       console.log(response.data);
     } catch (error) {
       console.error('Error', error);
@@ -34,12 +37,15 @@ const Signup = () => {
     console.log("name:", userDetails.name, "surname:", userDetails.surname, "email:", userDetails.email, "number:", userDetails.number);
 
     try {
-      await axios.post('http://localhost:500/userDetails', userDetails);
+      await axios.post('http://localhost:50001/api/users', userDetails);
       console.log('User successfully created!');
-      getUser();
+      getuserDetails();
     } catch (error) {
       console.error('Error creating user:', error);
     }
+
+
+    
   };
 
   return (

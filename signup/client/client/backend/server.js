@@ -2,13 +2,15 @@
 const express =require('express');
 const dotenv =require('dotenv').config()
 const mongoose =require('mongoose');
-const cors = require ('cors');
+const cors = require ('cors'); 
 const  userModel = require("./model/Schemas");
+const bodyParser = require('body-parser');
 const URI = process.env.MONGO_URI;
 const port = process.env.PORT || 50001
 
 const app = express();
-app.use=(cors());
+app.use(cors());
+app.use(bodyParser())
 
 
 const uri = "mongodb+srv://emilysbongile177:Emily.20@cluster0.1lqvov6.mongodb.net/form?retryWrites=true&w=majority";
@@ -28,11 +30,9 @@ app.get("/api/users", (req, res) => {
   });
   
   app.post("/api/users", async (req, res) => {
-    userModel.find({}).then(function(user){
-      res.status(201).json(user)
-    }).catch(function(err){
-      console.log(err)
-    })
+    console.log(req.body)
+    userModel.create(req.body)
+    res.send()
   });
 
 
